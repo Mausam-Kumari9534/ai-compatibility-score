@@ -17,12 +17,19 @@ exports.analyzeResume = async (req, res) => {
         const resumeText = await pdfService.extractText(resumeFile.buffer);
 
         // 2. Send to Gemini for analysis
+        console.log('[AnalyzeController] Request Payload:', {
+            jobDescriptionLength: jobDescription.length,
+            resumeTextLength: resumeText.length,
+            resumeTextPreview: resumeText.substring(0, 100).replace(/\n/g, ' '),
+            jobDescriptionPreview: jobDescription.substring(0, 100).replace(/\n/g, ' ')
+        });
         const analysisResult = await geminiService.analyze(resumeText, jobDescription);
 
         // 3. Return JSON response
         res.json(analysisResult);
     } catch (error) {
         console.error('Error analyzing resume:', error);
-        res.status(500).json({ error: 'An error occurred while analyzing the resume.', details: error.message, stack: error.stack });
+        const statusCode = error.status || 500;
+        res.status(statusCode).json({ error: error.message || 'An error occurred while analyzing the resume.', details: error.message, stack: error.stack });
     }
 };

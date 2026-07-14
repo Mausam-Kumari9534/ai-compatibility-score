@@ -2,16 +2,14 @@ const { GoogleGenAI } = require('@google/genai');
 
 // Initialize the Gemini client
 // Assumes GEMINI_API_KEY is set in environment variables
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // Model fallback chain: Try preferred models first, then stable/older models
 const MODELS_TO_TRY = [
-    'gemini-3.1-pro',
-    'gemini-2.5-flash',
-    'gemini-2.5-pro',
-    'gemini-2.0-flash',
-    'gemini-1.5-pro',
-    'gemini-1.5-flash'
+    'gemini-3-flash-preview',
+    'gemini-3-pro-preview',
+    'gemini-3.5-flash',
+    'gemini-flash-latest'
 ];
 
 exports.analyze = async (resumeText, jobDescription) => {
@@ -73,7 +71,7 @@ ${jobDescription}
     }
 
     // If we reach here, all fallback models failed.
-    console.error('[Gemini] All models failed. Returning graceful fallback to UI.');
+    console.error('[Gemini] All models failed. Throwing error.');
     
     let errorMessage = "An unexpected error occurred during AI analysis.";
     const status = primaryError?.status || (primaryError?.response && primaryError?.response?.status);
@@ -91,12 +89,7 @@ ${jobDescription}
         errorMessage = "AI analysis is temporarily unavailable due to an internal server error. Please try again later.";
     }
 
-    // Graceful fallback to prevent HTTP 500 and return a 200 OK response 
-    return {
-        matchScore: 0,
-        matchingSkills: [],
-        missingKeywords: ["N/A"],
-        summary: errorMessage,
-        suggestions: []
-    };
+    const err = new Error(errorMessage);
+    err.status = status || 500;
+    throw err;
 };

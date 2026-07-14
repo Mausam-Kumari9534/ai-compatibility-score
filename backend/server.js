@@ -4,6 +4,8 @@ dotenv.config();
 const express = require('express');
 const cors = require('cors');
 const apiRoutes = require('./routes/api');
+const authRoutes = require('./routes/auth');
+const connectDB = require('./config/db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,10 +20,11 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
 });
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
-// Database connection placeholder (No models needed for just AI match phase 1 MVP)
-// mongoose.connect(process.env.MONGO_URI, ...);
+// Database connection
+connectDB();
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
