@@ -14,16 +14,71 @@ const MODELS_TO_TRY = [
 
 exports.analyze = async (resumeText, jobDescription) => {
     const prompt = `
-You are an expert AI recruiter and resume analyzer.
+You are an expert AI recruiter and career assistant for students.
 Compare the following Resume Text with the Job Description.
 
 Return ONLY a valid JSON object matching exactly this structure (no markdown, no explanations, no code blocks around it, just raw JSON):
 {
   "matchScore": number (0-100),
-  "matchingSkills": [ array of strings ],
-  "missingKeywords": [ array of strings ],
+  "matchingSkills": [ "skill1", "skill2" ],
+  "missingKeywords": [ "keyword1", "keyword2" ],
   "summary": "Short 1-2 sentence summary of compatibility",
-  "suggestions": [ array of strings for improvement ]
+  "suggestions": [ "suggestion1", "suggestion2" ],
+  "eligibility": {
+    "status": "Eligible" | "Partially Eligible" | "Not Eligible",
+    "checks": [ { "requirement": "e.g., Degree Eligible", "status": true | false } ]
+  },
+  "atsBreakdown": {
+    "format": number, "technical": number, "projects": number, "education": number, "keyword": number, "softSkills": number
+  },
+  "skillsMatch": [
+    { "skill": "string", "status": true | false }
+  ],
+  "missingSkills": [
+    { "skill": "string", "priority": "Critical" | "Important" | "Optional" }
+  ],
+
+  "actionPlan": [
+    { "priority": number, "action": "string", "reason": "string", "impact": "string", "time": "string" }
+  ],
+  "scorePrediction": {
+    "current": number, "afterResume": number, "afterSkills": number
+  },
+  "rewrites": [
+    { "before": "string", "after": "string" }
+  ],
+  "verdict": {
+    "interviewChance": number, "opinion": "string"
+  },
+  "applyDecision": {
+    "decision": "YES" | "APPLY AFTER UPDATING RESUME" | "NO",
+    "reason": "string"
+  },
+  "nextSteps": [ "string" ],
+  "resumeHighlights": [
+    { "section": "string", "feedback": "string", "status": "Green" | "Yellow" | "Red" }
+  ],
+  "keywordDensity": [
+    { "keyword": "string", "mentions": number, "status": true | false }
+  ],
+  "recruiterReview": {
+    "strengths": [ "string" ], "weaknesses": [ "string" ], "finalRecommendation": "string"
+  },
+  "interviewPrep": [
+    { "category": "Technical" | "HR" | "Project" | "Coding", "question": "string", "difficulty": "Easy" | "Medium" | "Hard" }
+  ],
+  "learningResources": [
+    { "skill": "string", "resources": ["string", "string"], "estimatedTime": "string" }
+  ],
+  "companyFit": {
+    "best": ["string"], "average": ["string"], "needsImprovement": ["string"], "explanation": "string"
+  },
+  "timeline": [
+    { "step": "string", "duration": "string" }
+  ],
+  "careerSummary": {
+    "readiness": number, "suitableRoles": ["string"], "salaryRange": "string", "overallRecommendation": "string"
+  }
 }
 
 RESUME TEXT:

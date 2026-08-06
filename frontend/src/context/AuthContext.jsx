@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchProfile = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/auth/profile');
+            const res = await axios.get('/api/auth/profile');
             setUser(res.data.user);
         } catch (error) {
             console.error('Error fetching profile:', error);
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async (email, password) => {
-        const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+        const res = await axios.post('/api/auth/login', { email, password });
         if (res.data.success) {
             setToken(res.data.token);
             localStorage.setItem('token', res.data.token);
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (fullName, email, password) => {
-        const res = await axios.post('http://localhost:5000/api/auth/register', { fullName, email, password });
+        const res = await axios.post('/api/auth/register', { fullName, email, password });
         if (res.data.success) {
             setToken(res.data.token);
             localStorage.setItem('token', res.data.token);

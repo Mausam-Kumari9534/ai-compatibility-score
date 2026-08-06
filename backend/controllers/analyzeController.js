@@ -26,7 +26,10 @@ exports.analyzeResume = async (req, res) => {
         const analysisResult = await geminiService.analyze(resumeText, jobDescription);
 
         // 3. Return JSON response
-        res.json(analysisResult);
+        res.json({
+            ...analysisResult,
+            resumeText: resumeText
+        });
     } catch (error) {
         console.error('Error analyzing resume:', error);
         const statusCode = error.status || 500;

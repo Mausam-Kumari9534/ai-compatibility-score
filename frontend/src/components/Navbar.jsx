@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Briefcase, User, LogOut } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
@@ -58,19 +58,27 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-3">
-                <Link
+              <div className="flex items-center gap-4">
+                <NavLink
                   to="/login"
-                  className="text-[14px] font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "inline-flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800 h-8 px-4 shadow-sm"
+                      : "text-[14px] font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  }
                 >
                   Log in
-                </Link>
-                <Link 
-                  to="/register" 
-                  className="inline-flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800 h-8 px-4 shadow-sm"
+                </NavLink>
+                <NavLink 
+                  to="/signup" 
+                  className={({ isActive }) =>
+                    isActive
+                      ? "inline-flex items-center justify-center rounded-lg text-[13px] font-medium transition-colors bg-gray-900 text-white hover:bg-gray-800 h-8 px-4 shadow-sm"
+                      : "text-[14px] font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  }
                 >
                   Sign up
-                </Link>
+                </NavLink>
               </div>
             )}
           </div>

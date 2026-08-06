@@ -88,14 +88,14 @@ const LoginPage = () => {
                             disabled={isLoading}
                             className="flex w-full justify-center rounded-lg border border-transparent bg-indigo-600 py-2.5 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70"
                         >
-                            {isLoading ? 'Signing in...' : 'Sign in'}
+                            {isLoading ? 'Logging in...' : 'Log in'}
                         </button>
                     </div>
                 </form>
 
                 <div className="text-center text-sm">
                     <span className="text-gray-500">Don't have an account? </span>
-                    <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
                         Sign up
                     </Link>
                 </div>
