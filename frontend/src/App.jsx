@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import WorkspacePage from './pages/WorkspacePage';
+import ResumeBuilderPage from './pages/ResumeBuilderPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -37,6 +38,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <WorkspacePage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/resume-builder" 
+                element={
+                  <ProtectedRoute>
+                    <ResumeBuilderPage />
                   </ProtectedRoute>
                 } 
               />

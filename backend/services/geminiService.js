@@ -12,6 +12,59 @@ const MODELS_TO_TRY = [
     'gemini-flash-latest'
 ];
 
+const executeGemini = async (prompt, isJson = true) => {
+    let primaryError = null;
+
+    for (const modelName of MODELS_TO_TRY) {
+        try {
+            console.log(`[Gemini] Attempting analysis with model: ${modelName}`);
+            const response = await ai.models.generateContent({
+                model: modelName,
+                contents: prompt,
+            });
+
+            let text = response.text;
+            
+            if (isJson) {
+                text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(text);
+            }
+            return text;
+            
+        } catch (error) {
+            const status = error.status || (error.response && error.response.status) || 500;
+            console.error(`[Gemini] Model ${modelName} failed with status ${status}:`, error.message);
+            
+            if (status === 401) {
+                primaryError = error;
+                break;
+            }
+            
+            if (!primaryError || status === 429 || status === 503 || status === 500) {
+                primaryError = error;
+            }
+        }
+    }
+
+    let errorMessage = "An unexpected error occurred during AI generation.";
+    const status = primaryError?.status || (primaryError?.response && primaryError?.response?.status);
+    const msg = primaryError?.message || "";
+
+    if (status === 401 || msg.includes('401') || msg.toLowerCase().includes('api key')) {
+        errorMessage = "AI is unavailable because the configured Gemini API key is invalid or missing.";
+    } else if (status === 429 || msg.includes('429') || msg.toLowerCase().includes('quota')) {
+        errorMessage = "AI is temporarily unavailable because the API quota has been exceeded.";
+    } else if (status === 404 || msg.includes('404')) {
+        errorMessage = "AI models are not supported for this account.";
+    } else if (status === 503 || msg.includes('503') || msg.toLowerCase().includes('high demand')) {
+        errorMessage = "AI is temporarily unavailable due to high API demand.";
+    }
+
+    const err = new Error(errorMessage);
+    err.status = status || 500;
+    throw err;
+};
+
 exports.analyze = async (resumeText, jobDescription) => {
     const prompt = `
 You are an expert AI recruiter and career assistant for students.
@@ -37,7 +90,6 @@ Return ONLY a valid JSON object matching exactly this structure (no markdown, no
   "missingSkills": [
     { "skill": "string", "priority": "Critical" | "Important" | "Optional" }
   ],
-
   "actionPlan": [
     { "priority": number, "action": "string", "reason": "string", "impact": "string", "time": "string" }
   ],
@@ -87,64 +139,95 @@ ${resumeText}
 JOB DESCRIPTION:
 ${jobDescription}
 `;
+    return executeGemini(prompt, true);
+};
 
-    let primaryError = null;
+exports.optimizeResume = async (resumeText, jobDescription) => {
+    const prompt = `
+You are an expert AI resume writer.
+Analyze the original RESUME TEXT and the target JOB DESCRIPTION.
+Provide optimized bullet points for experience, projects, and a new summary that perfectly aligns with the job description.
 
-    // Try each model in sequence
-    for (const modelName of MODELS_TO_TRY) {
-        try {
-            console.log(`[Gemini] Attempting analysis with model: ${modelName}`);
-            const response = await ai.models.generateContent({
-                model: modelName,
-                contents: prompt,
-            });
+RULES:
+- Do NOT invent qualifications, skills, experience, projects, marks, certifications, internships, or achievements not present in the original resume.
+- Only rewrite, reorganize, improve wording, and improve ATS keywords where truthful.
+- Return ONLY a valid JSON object matching exactly this structure (no markdown):
+{
+  "summary": { "before": "string", "after": "string" },
+  "experience": [
+    { "role": "string", "company": "string", "bullets": [ { "before": "string", "after": "string" } ] }
+  ],
+  "projects": [
+    { "name": "string", "bullets": [ { "before": "string", "after": "string" } ] }
+  ],
+  "skills": { "before": "string", "after": "string" }
+}
 
-            let text = response.text;
-            
-            // Clean up markdown if Gemini accidentally adds it
-            text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            
-            const result = JSON.parse(text);
-            console.log(`[Gemini] Successfully generated response using ${modelName}`);
-            return result;
-            
-        } catch (error) {
-            const status = error.status || (error.response && error.response.status) || 500;
-            console.error(`[Gemini] Model ${modelName} failed with status ${status}:`, error.message);
-            
-            // If the API key is invalid (401), trying other models will also fail, so we break early.
-            if (status === 401) {
-                primaryError = error;
-                break;
-            }
-            
-            // Prioritize 429 (Quota) over 404 (Not Found) for the final error message
-            if (!primaryError || status === 429 || status === 503 || status === 500) {
-                primaryError = error;
-            }
-        }
+RESUME TEXT:
+${resumeText}
+
+JOB DESCRIPTION:
+${jobDescription}
+`;
+    return executeGemini(prompt, true);
+};
+
+exports.generateCoverLetter = async (resumeText, jobDescription) => {
+    const prompt = `
+You are an expert career counselor. 
+Based on the following RESUME TEXT and JOB DESCRIPTION, generate a professional, personalized cover letter.
+Structure it with:
+- Dear Hiring Manager,
+- Introduction
+- Relevant technical skills
+- Relevant projects/experience
+- Why the candidate fits this role
+- Closing
+
+RULES:
+- Do NOT generate fake experience. If information is missing, use placeholders like [Your Phone Number] or adapt gracefully.
+- Do NOT return JSON. Return the raw cover letter text.
+
+RESUME TEXT:
+${resumeText}
+
+JOB DESCRIPTION:
+${jobDescription}
+`;
+    return executeGemini(prompt, false);
+};
+
+exports.generateInterviewQuestions = async (resumeText, jobDescription) => {
+    const prompt = `
+You are an expert technical interviewer.
+Generate 10-15 interview questions specifically tailored to the provided RESUME TEXT and JOB DESCRIPTION.
+
+Divide the questions strictly into these 4 categories: "Technical", "HR", "Project", "Coding".
+
+For each question, provide:
+- The question text
+- Difficulty (Easy, Medium, Hard)
+- Why this question is relevant to the candidate's resume/JD
+- A suggested answer approach for the candidate
+
+Return ONLY a valid JSON object matching exactly this structure (no markdown):
+{
+  "questions": [
+    {
+      "category": "Technical",
+      "question": "string",
+      "difficulty": "Easy",
+      "why": "string",
+      "suggestedAnswer": "string"
     }
+  ]
+}
 
-    // If we reach here, all fallback models failed.
-    console.error('[Gemini] All models failed. Throwing error.');
-    
-    let errorMessage = "An unexpected error occurred during AI analysis.";
-    const status = primaryError?.status || (primaryError?.response && primaryError?.response?.status);
-    const msg = primaryError?.message || "";
+RESUME TEXT:
+${resumeText}
 
-    if (status === 401 || msg.includes('401') || msg.toLowerCase().includes('api key')) {
-        errorMessage = "AI analysis is unavailable because the configured Gemini API key is invalid or missing.";
-    } else if (status === 429 || msg.includes('429') || msg.toLowerCase().includes('quota')) {
-        errorMessage = "AI analysis is temporarily unavailable because the Gemini API quota has been exceeded. Please try again later or use a different API key.";
-    } else if (status === 404 || msg.includes('404')) {
-        errorMessage = "AI analysis is unavailable because the requested AI models are not supported for this account.";
-    } else if (status === 503 || msg.includes('503') || msg.toLowerCase().includes('high demand')) {
-        errorMessage = "AI analysis is temporarily unavailable due to high API demand. Please try again later.";
-    } else {
-        errorMessage = "AI analysis is temporarily unavailable due to an internal server error. Please try again later.";
-    }
-
-    const err = new Error(errorMessage);
-    err.status = status || 500;
-    throw err;
+JOB DESCRIPTION:
+${jobDescription}
+`;
+    return executeGemini(prompt, true);
 };

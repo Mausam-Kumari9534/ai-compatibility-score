@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import { generateATSReportPDF } from '../utils/pdfGenerator';
+import TakeActionSection from '../components/TakeActionSection';
 import { 
   UploadCloud, File, X, Loader2, Check, FileText, LayoutDashboard, 
   Sparkles, AlertCircle, Award, Target, Briefcase, Zap, TrendingUp, 
@@ -16,6 +18,7 @@ const WorkspacePage = () => {
   const [error, setError] = useState('');
   const [result, setResult] = useState(null);
   const [previousResult, setPreviousResult] = useState(null);
+  const [pdfState, setPdfState] = useState('idle');
   
   const fileInputRef = useRef(null);
 
@@ -68,8 +71,9 @@ const WorkspacePage = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!file) {
+  const handleSubmit = async (overrideFile = null) => {
+    const targetFile = (overrideFile instanceof globalThis.File) ? overrideFile : file;
+    if (!targetFile) {
       setError('Please upload a resume first.');
       return;
     }
@@ -80,16 +84,19 @@ const WorkspacePage = () => {
 
     setIsLoading(true);
     setError('');
-    setResult(null);
+    
+    // We don't set result to null immediately if we are re-analyzing, 
+    // to prevent the UI from disappearing entirely, but let's keep it null for a loading state
+    // Actually, setting result to null removes the whole UI, so we just set loading to true.
+    // If there's an existing result, we should keep it on screen until the new one is ready.
+    // Wait, the UI relies on `result ? ... : ...`. Let's just let it be for now.
 
     const formData = new FormData();
-    formData.append('resume', file);
+    formData.append('resume', targetFile);
     formData.append('jobDescription', jobDescription);
 
     try {
-      const response = await axios.post('/api/analyze-resume', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await axios.post('/api/analyze-resume', formData);
       
       const newResult = response.data;
       
@@ -108,8 +115,27 @@ const WorkspacePage = () => {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const downloadATSReport = async () => {
+    try {
+      setPdfState('downloading');
+      
+      // Simulate slight delay to ensure UI updates
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      let candidateName = "Candidate";
+      if (file && file.name) {
+        candidateName = file.name.replace('.pdf', '');
+      }
+      
+      generateATSReportPDF(result, candidateName);
+      
+      setPdfState('success');
+      setTimeout(() => setPdfState('idle'), 3000);
+    } catch (err) {
+      console.error("ATS PDF generation failed:", err);
+      setPdfState('error');
+      setTimeout(() => setPdfState('idle'), 3000);
+    }
   };
 
   const renderSkeleton = () => (
@@ -149,11 +175,19 @@ const WorkspacePage = () => {
         {/* DOWNLOAD BUTTON */}
         <div className="flex justify-end no-print">
           <button 
-            onClick={handlePrint}
-            className="inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 h-10 px-4 shadow-sm hover:shadow"
+            onClick={downloadATSReport}
+            disabled={pdfState === 'downloading'}
+            className="inline-flex items-center justify-center rounded-xl text-sm font-semibold transition-all bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 h-10 px-4 shadow-sm hover:shadow disabled:opacity-50"
           >
-            <Download className="h-4 w-4 mr-2" />
-            Download ATS Report
+            {pdfState === 'downloading' ? (
+              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Downloading...</>
+            ) : pdfState === 'success' ? (
+              <><Check className="mr-2 h-4 w-4 text-emerald-500" /> Downloaded ✓</>
+            ) : pdfState === 'error' ? (
+              <><AlertTriangle className="mr-2 h-4 w-4 text-rose-500" /> Failed — Try Again</>
+            ) : (
+              <><Download className="h-4 w-4 mr-2" /> Download ATS Report</>
+            )}
           </button>
         </div>
 
@@ -545,6 +579,15 @@ const WorkspacePage = () => {
              </p>
            </div>
         </div>
+        
+        <TakeActionSection 
+          resumeText={result.resumeText} 
+          jobDescription={jobDescription}
+          onReAnalyze={(newFile) => {
+            setFile(newFile);
+            handleSubmit(newFile);
+          }}
+        />
 
       </div>
     );

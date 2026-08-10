@@ -19,3 +19,32 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@media print {
+  @page {
+    size: auto;
+    margin: 10mm;
+  }
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: white !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .max-w-\[210mm\] {
+    max-width: none !important;
+  }
+  .min-h-\[297mm\] {
+    min-height: 0 !important;
+  }
+  /* Prevent awkward page breaks */
+  h1, h2, h3, h4, h5, h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  /* Ensure grids can be paginated without cropping. Note: some browsers truncate long grid/flex items in print, so this forces a fallback to block if they exceed the page size. We use standard block behavior. */
+  .print-block {
+    display: block !important;
+  }
+}

@@ -31,6 +31,12 @@ const Navbar = () => {
             >
               Workspace
             </Link>
+            <Link 
+              to="/resume-builder" 
+              className="text-[14px] font-medium text-gray-500 hover:text-gray-900 transition-colors hidden sm:block"
+            >
+              Resume Builder
+            </Link>
             
             {user ? (
               <div className="flex items-center gap-4">
