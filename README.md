@@ -55,6 +55,16 @@ It generates a **compatibility score, matching skills, missing keywords, ATS ins
 
 ---
 
+## 🎯 Problem & Solution
+
+### Problem
+
+Job seekers often struggle to understand whether their resume matches a specific job description and which skills or keywords are missing.
+
+### Solution
+
+AI Compatibility Score analyzes the resume against the target Job Description using Google Gemini AI and provides a compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations.
+
 ## 📌 Project Overview
 
 The platform helps job seekers understand how well their resume matches a particular job description.
