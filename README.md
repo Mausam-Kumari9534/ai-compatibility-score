@@ -106,8 +106,6 @@ The application also provides an AI-powered Resume Builder where users can:
 
 ## 📸 Screenshots
 
-## 📸 Screenshots
-
 ### 🏠 Home Page
 
 ![Home Page](./images/home.png)
