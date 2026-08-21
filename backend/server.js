@@ -31,10 +31,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
 
 // Database connection
-connectDB();
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 });
 
 // Keep-alive for the event loop

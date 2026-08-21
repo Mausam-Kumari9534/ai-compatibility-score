@@ -50,7 +50,7 @@ exports.register = async (req, res) => {
         }
     } catch (error) {
         console.error("Register error:", error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({ success: false, message: error.message || 'Server error' });
     }
 };
 
@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
         });
     } catch (error) {
         console.error("Login error:", error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({ success: false, message: error.message || 'Server error' });
     }
 };
 
@@ -117,6 +117,6 @@ exports.getProfile = async (req, res) => {
         });
     } catch (error) {
         console.error("Profile error:", error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({ success: false, message: error.message || 'Server error' });
     }
 };
