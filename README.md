@@ -106,7 +106,23 @@ The application also provides an AI-powered Resume Builder where users can:
 
 ## 📸 Screenshots
 
-Screenshots of the application will be added here.
+## 📸 Screenshots
+
+### 🏠 Home Page
+
+![Home Page](./images/home.png)
+
+### 📊 Resume Analysis
+
+![Resume Analysis](./images/analysis.png)
+
+### 🎯 Compatibility Result
+
+![Compatibility Result](./images/result.png)
+
+### 📝 Resume Builder
+
+![Resume Builder](./images/resume-builder.png)
 
 ---
 
