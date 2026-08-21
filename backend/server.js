@@ -14,13 +14,16 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('AI Compatibility Score Backend is running!');
-});
+
 
 // Dummy route to prevent 404 errors for Chrome DevTools
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
     res.json({});
+});
+
+// Health-check route for Render
+app.get('/', (req, res) => {
+    res.send('Backend is running successfully!');
 });
 
 // Routes
