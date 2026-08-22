@@ -1,37 +1,61 @@
 # 🤖 AI Compatibility Score
 
-### AI-Powered Resume & Job Matching Platform
+## AI-Powered Resume & Job Matching Platform
 
-AI Compatibility Score is a full-stack web application that uses **Google Gemini AI** to analyze a candidate's resume against a specific Job Description.
+AI Compatibility Score is a full-stack AI-powered career platform that helps job seekers analyze, improve, and build professional resumes.
 
-It generates a **compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations** to help candidates improve their resume before applying for a job.
+The platform uses **Google Gemini AI** to analyze a candidate's resume against a specific Job Description and generates a compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations.
 
-### 🚀 Live Demo
+It also provides an integrated **Resume Builder** where users can create, customize, improve, save, and export professional resumes.
 
-[Try AI Compatibility Score →](https://ai-compatibility-score-6ibclw422-mau-projects-c34a89af.vercel.app)
+---
 
-### 📂 GitHub Repository
+## 🚀 Live Demo
 
-[View Source Code →](https://github.com/Mausam-Kumari9534/ai-compatibility-score)
+[Try AI Compatibility Score](https://ai-compatibility-score-6ibclw422-mau-projects-c34a89af.vercel.app/)
+
+## 📂 GitHub Repository
+
+[View Source Code](https://github.com/Mausam-Kumari9534/ai-compatibility-score)
 
 ---
 
 ## ✨ Key Features
 
+### 🎯 Resume & Job Matching
+
 - 📄 Upload resume in PDF format
 - 🎯 Compare resume with Job Description
 - 🤖 AI-powered analysis using Google Gemini
-- 📊 Generate compatibility score
-- 🔑 Identify missing skills and keywords
-- 📈 ATS-oriented analysis
+- 📊 Generate resume compatibility score
+- 🔑 Identify matching skills
+- 🔍 Identify missing skills and keywords
+- 📈 ATS-oriented resume analysis
 - 💡 Personalized resume improvement suggestions
+
+### ✍️ AI Career Assistance
+
 - ✍️ AI-powered resume rewriting
 - 📨 AI-generated cover letters
 - 🎤 Interview preparation questions
-- 📝 AI-powered Resume Builder
-- 📥 Export resume as PDF/DOC
-- 🔐 JWT-based authentication
+- 💡 AI-powered career recommendations
+
+### 📝 Resume Builder
+
+- 📝 Create professional resumes
+- 🎨 Choose from multiple resume templates
+- ✏️ Edit resume sections
+- ✨ Get AI-powered suggestions
+- 🔄 Rewrite resume content using AI
 - 💾 Save and manage resume drafts
+- 📥 Export resumes as PDF/DOC
+
+### 🔐 User & Data Management
+
+- 🔐 JWT-based authentication
+- 🔒 Password hashing using bcryptjs
+- 💾 MongoDB-based data storage
+- 👤 User-specific resume and analysis data
 
 ---
 
@@ -39,15 +63,15 @@ It generates a **compatibility score, matching skills, missing keywords, ATS ins
 
 | Technology | Purpose |
 |---|---|
-| React.js | Frontend |
+| React.js | Frontend UI |
 | Tailwind CSS | UI Styling |
 | Node.js | Backend Runtime |
-| Express.js | REST APIs |
+| Express.js | REST API Development |
 | MongoDB | Database |
 | Mongoose | Database Modeling |
 | JWT | Authentication |
 | bcryptjs | Password Hashing |
-| Google Gemini AI | AI Analysis |
+| Google Gemini AI | Resume & Career Analysis |
 | pdf-parse | Resume Text Extraction |
 | Multer | PDF Upload Handling |
 | Vite | Frontend Build Tool |
@@ -59,85 +83,225 @@ It generates a **compatibility score, matching skills, missing keywords, ATS ins
 
 ### Problem
 
-Job seekers often struggle to understand whether their resume matches a specific job description and which skills or keywords are missing.
+Job seekers often struggle to understand whether their resume matches a specific job description. They may also miss important skills, keywords, ATS requirements, and professional resume formatting.
 
 ### Solution
 
-AI Compatibility Score analyzes the resume against the target Job Description using Google Gemini AI and provides a compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations.
+AI Compatibility Score provides an AI-powered platform that analyzes a resume against a target Job Description and generates a compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations.
+
+In addition, the integrated Resume Builder allows users to create and customize professional resumes and export them for job applications.
+
+---
 
 ## 📌 Project Overview
 
-The platform helps job seekers understand how well their resume matches a particular job description.
+AI Compatibility Score is designed as a complete career preparation platform with two major modules:
 
-The user uploads a resume and provides a Job Description. The backend extracts the resume text and sends it along with the Job Description to Google Gemini AI.
+### 1. 🎯 AI Resume & Job Matching
 
-The AI analyzes both inputs and generates a structured report containing compatibility score, matching skills, missing keywords, ATS insights, and personalized recommendations.
+Users can upload their resume and enter a target Job Description. The backend extracts the resume text and sends the resume content along with the Job Description to Google Gemini AI.
 
----
+The AI analyzes both inputs and generates structured insights such as:
 
-## 🔄 How It Works
+- Compatibility Score
+- Matching Skills
+- Missing Skills
+- Missing Keywords
+- ATS Insights
+- Resume Improvement Suggestions
 
-1. User registers or logs in.
-2. User uploads a PDF resume.
-3. User enters the target Job Description.
-4. Backend extracts text from the resume.
-5. Resume and Job Description are analyzed using Gemini AI.
-6. AI generates compatibility score and detailed insights.
-7. Results are displayed on the dashboard.
-8. User can improve the resume using AI suggestions.
+### 2. 📝 Resume Builder
 
----
-
-## 🏗️ System Architecture
-
-![System Architecture](./images/architecture.png)
-
----
-
-## 🔄 Application Workflow
-
-![Application Workflow](./images/workflow.png)
-
----
-
-## 📝 Resume Builder
-
-The application also provides an AI-powered Resume Builder where users can:
+The platform also provides a dedicated Resume Builder that allows users to:
 
 - Create professional resumes
-- Choose from multiple templates
+- Select resume templates
+- Add personal information
+- Add education and experience
+- Add technical and soft skills
 - Edit resume sections
-- Get AI suggestions
-- Rewrite resume content
+- Use AI rewriting suggestions
 - Save resume drafts
 - Export resumes as PDF/DOC
 
 ---
 
-## 📸 Screenshots
+## 🔄 How It Works
 
-### 🏠 Home Page
+### Resume Analysis Flow
 
-![Home Page](./images/home.png)
+1. User registers or logs in.
+2. User uploads a PDF resume.
+3. User enters the target Job Description.
+4. Backend receives the uploaded resume.
+5. `pdf-parse` extracts text from the PDF.
+6. Resume text and Job Description are sent to Google Gemini AI.
+7. Gemini analyzes the candidate's profile against the Job Description.
+8. The application generates a compatibility score and detailed insights.
+9. Results are displayed on the dashboard.
+10. User can improve the resume using AI suggestions.
 
-### 📊 Resume Analysis
+### Resume Builder Flow
 
-![Resume Analysis](./images/analysis.png)
-
-### 🎯 Compatibility Result
-
-![Compatibility Result](./images/result.png)
-
-### 📝 Resume Builder
-
-![Resume Builder](./images/resume-builder.png)
+1. User opens the Resume Builder.
+2. User selects a resume template.
+3. User enters personal information.
+4. User adds education, experience, and skills.
+5. User can use AI-powered rewriting suggestions.
+6. Resume preview is updated dynamically.
+7. User can save the resume draft.
+8. User can export the final resume as PDF/DOC.
 
 ---
 
-## 🚀 Installation & Setup
+## 🏗️ System Architecture
 
+```mermaid
+flowchart TB
+
+    U[👤 User]
+
+    subgraph FRONTEND[Frontend - React + Tailwind CSS]
+        UI[Web Interface]
+        AUTH[Authentication]
+        ANALYSIS[Resume Analysis]
+        BUILDER[Resume Builder]
+        DASHBOARD[Dashboard]
+    end
+
+    subgraph BACKEND[Backend - Node.js + Express]
+        API[REST APIs]
+        UPLOAD[Multer PDF Upload]
+        PARSER[pdf-parse]
+        AUTHAPI[JWT Authentication]
+    end
+
+    subgraph AI[AI Layer]
+        GEMINI[Google Gemini AI]
+    end
+
+    subgraph DATABASE[Database]
+        MONGO[(MongoDB)]
+    end
+
+    U --> UI
+
+    UI --> AUTH
+    UI --> ANALYSIS
+    UI --> BUILDER
+    UI --> DASHBOARD
+
+    AUTH --> AUTHAPI
+    ANALYSIS --> API
+    BUILDER --> API
+    DASHBOARD --> API
+
+    API --> UPLOAD
+    UPLOAD --> PARSER
+    PARSER --> GEMINI
+    API --> GEMINI
+
+    API --> MONGO
+    AUTHAPI --> MONGO
+
+    GEMINI --> API
+    API --> DASHBOARD
 ### Clone the Repository
 
 ```bash
 git clone https://github.com/Mausam-Kumari9534/ai-compatibility-score.git
 cd ai-compatibility-score
+
+📝 Resume Builder
+
+The Resume Builder is an integrated module that helps users create professional resumes without leaving the platform.
+
+Features
+🎨 Multiple resume templates
+👤 Personal information
+🎓 Education section
+💼 Experience section
+🛠️ Technical and soft skills
+✨ AI-powered rewriting
+💾 Save resume drafts
+👀 Live resume preview
+📥 PDF/DOC export
+📸 Screenshots
+🏠 Home Page
+
+📊 Resume Analysis
+
+🎯 Compatibility Result
+
+📝 Resume Builder
+
+🚀 Installation & Setup
+1. Clone the Repository
+git clone https://github.com/Mausam-Kumari9534/ai-compatibility-score.git
+cd ai-compatibility-score
+2. Install Backend Dependencies
+cd backend
+npm install
+3. Configure Environment Variables
+
+Create a .env file inside the backend folder.
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+GEMINI_API_KEY=your_gemini_api_key
+4. Start Backend
+npm run dev
+5. Install Frontend Dependencies
+
+Open a new terminal:
+
+cd frontend
+npm install
+6. Start Frontend
+npm run dev
+
+
+📁 Project Structure
+ai-compatibility-score/
+│
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── utils/
+│   └── server.js
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── App.jsx
+│   └── package.json
+│
+├── images/
+│   ├── architecture.png
+│   ├── workflow.png
+│   ├── home.png
+│   ├── analysis.png
+│   ├── result.png
+│   └── resume-builder.png
+│
+├── .gitignore
+└── README.md
+🔮 Future Enhancements
+🌐 Job portal integration
+🔎 Automated job discovery
+📊 Advanced resume analytics
+🎯 Personalized job recommendations
+🤖 AI-powered career assistant
+📈 Resume performance tracking
+🔔 Job application tracking
+👩‍💻 Author
+
+Mausam Kumari
+
+B.Tech – Information Technology
+
+GitHub: Mausam-Kumari9534
