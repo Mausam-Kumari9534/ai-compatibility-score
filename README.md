@@ -206,3 +206,53 @@ flowchart TB
 
     GEMINI --> API
     API --> DASHBOARD
+
+
+    ---
+
+## 🔄 Application Workflow
+
+The application provides two main workflows: **AI Resume Analysis** and **Resume Builder**.
+
+```mermaid
+flowchart TD
+
+    START([👤 User]) --> AUTH{Login / Register}
+
+    AUTH --> MODULE{Choose Module}
+
+    MODULE --> ANALYSIS[🎯 Resume Analysis]
+    MODULE --> BUILDER[📝 Resume Builder]
+
+    ANALYSIS --> UPLOAD[📄 Upload PDF Resume]
+    UPLOAD --> JD[📋 Enter Job Description]
+    JD --> EXTRACT[🔍 Extract Resume Text]
+    EXTRACT --> AI[🤖 Google Gemini AI]
+
+    AI --> SCORE[📊 Compatibility Score]
+    AI --> MATCH[🔑 Matching Skills]
+    AI --> MISSING[🔍 Missing Skills & Keywords]
+    AI --> ATS[📈 ATS Insights]
+    AI --> SUGGEST[💡 Personalized Suggestions]
+
+    SCORE --> RESULTS[📊 Analysis Results]
+    MATCH --> RESULTS
+    MISSING --> RESULTS
+    ATS --> RESULTS
+    SUGGEST --> RESULTS
+
+    RESULTS --> IMPROVE[✍️ Improve Resume]
+
+    BUILDER --> TEMPLATE[🎨 Select Template]
+    TEMPLATE --> INFO[👤 Personal Information]
+    INFO --> EDUCATION[🎓 Education]
+    EDUCATION --> EXPERIENCE[💼 Experience]
+    EXPERIENCE --> SKILLS[🛠️ Skills]
+    SKILLS --> AIWRITE[✨ AI Rewrite / Suggestions]
+    AIWRITE --> PREVIEW[👀 Resume Preview]
+    PREVIEW --> SAVE[💾 Save Draft]
+    SAVE --> EXPORT[📥 Export PDF/DOC]
+
+    IMPROVE --> BUILDER
+
+    
