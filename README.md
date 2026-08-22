@@ -272,10 +272,3 @@ SAVE --> EXPORT[Export PDF or DOC]
 
 ![Resume Builder](images/resume-builder.png)
 
-### 🏗️ System Architecture
-
-![System Architecture](images/architecture.png)
-
-### 🔄 Application Workflow
-
-![Application Workflow](images/workflow.png)
