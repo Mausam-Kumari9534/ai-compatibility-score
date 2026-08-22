@@ -159,56 +159,55 @@ The platform also provides a dedicated Resume Builder that allows users to:
 ```mermaid
 flowchart TB
 
-    U[👤 User]
+USER[User]
 
-    subgraph FRONTEND[Frontend - React + Tailwind CSS]
-        UI[Web Interface]
-        AUTH[Authentication]
-        ANALYSIS[Resume Analysis]
-        BUILDER[Resume Builder]
-        DASHBOARD[Dashboard]
-    end
+subgraph FRONTEND[Frontend - React and Tailwind CSS]
+    UI[Web Interface]
+    AUTH[Authentication]
+    ANALYSIS[Resume Analysis]
+    BUILDER[Resume Builder]
+    DASHBOARD[Dashboard]
+end
 
-    subgraph BACKEND[Backend - Node.js + Express]
-        API[REST APIs]
-        UPLOAD[Multer PDF Upload]
-        PARSER[pdf-parse]
-        AUTHAPI[JWT Authentication]
-    end
+subgraph BACKEND[Backend - Node.js and Express]
+    API[REST APIs]
+    UPLOAD[Multer PDF Upload]
+    PARSER[pdf-parse]
+    AUTHP[JWT Authentication]
+end
 
-    subgraph AI[AI Layer]
-        GEMINI[Google Gemini AI]
-    end
+subgraph AI[AI Layer]
+    GEMINI[Google Gemini AI]
+end
 
-    subgraph DATABASE[Database]
-        MONGO[(MongoDB)]
-    end
+subgraph DATABASE[Database]
+    MONGO[MongoDB]
+end
 
-    U --> UI
+USER --> UI
 
-    UI --> AUTH
-    UI --> ANALYSIS
-    UI --> BUILDER
-    UI --> DASHBOARD
+UI --> AUTH
+UI --> ANALYSIS
+UI --> BUILDER
+UI --> DASHBOARD
 
-    AUTH --> AUTHAPI
-    ANALYSIS --> API
-    BUILDER --> API
-    DASHBOARD --> API
+AUTH --> AUTHP
+ANALYSIS --> API
+BUILDER --> API
+DASHBOARD --> API
 
-    API --> UPLOAD
-    UPLOAD --> PARSER
-    PARSER --> GEMINI
-    API --> GEMINI
+API --> UPLOAD
+UPLOAD --> PARSER
+PARSER --> GEMINI
+API --> GEMINI
 
-    API --> MONGO
-    AUTHAPI --> MONGO
+API --> MONGO
+AUTHP --> MONGO
 
-    GEMINI --> API
-    API --> DASHBOARD
+GEMINI --> API
+API --> DASHBOARD
 
-
-    ---
+```
 
 ## 🔄 Application Workflow
 
@@ -217,42 +216,66 @@ The application provides two main workflows: **AI Resume Analysis** and **Resume
 ```mermaid
 flowchart TD
 
-    START([👤 User]) --> AUTH{Login / Register}
+START[User] --> LOGIN[Login or Register]
+LOGIN --> MODULE[Choose Module]
 
-    AUTH --> MODULE{Choose Module}
+MODULE --> ANALYSIS[Resume Analysis]
+MODULE --> BUILDER[Resume Builder]
 
-    MODULE --> ANALYSIS[🎯 Resume Analysis]
-    MODULE --> BUILDER[📝 Resume Builder]
+ANALYSIS --> UPLOAD[Upload Resume PDF]
+UPLOAD --> JD[Enter Job Description]
+JD --> EXTRACT[Extract Resume Text]
+EXTRACT --> AI[Google Gemini AI]
 
-    ANALYSIS --> UPLOAD[📄 Upload PDF Resume]
-    UPLOAD --> JD[📋 Enter Job Description]
-    JD --> EXTRACT[🔍 Extract Resume Text]
-    EXTRACT --> AI[🤖 Google Gemini AI]
+AI --> SCORE[Compatibility Score]
+AI --> MATCH[Matching Skills]
+AI --> MISSING[Missing Skills and Keywords]
+AI --> ATS[ATS Insights]
+AI --> SUGGEST[Personalized Suggestions]
 
-    AI --> SCORE[📊 Compatibility Score]
-    AI --> MATCH[🔑 Matching Skills]
-    AI --> MISSING[🔍 Missing Skills & Keywords]
-    AI --> ATS[📈 ATS Insights]
-    AI --> SUGGEST[💡 Personalized Suggestions]
+SCORE --> RESULTS[Analysis Results]
+MATCH --> RESULTS
+MISSING --> RESULTS
+ATS --> RESULTS
+SUGGEST --> RESULTS
 
-    SCORE --> RESULTS[📊 Analysis Results]
-    MATCH --> RESULTS
-    MISSING --> RESULTS
-    ATS --> RESULTS
-    SUGGEST --> RESULTS
+RESULTS --> IMPROVE[Improve Resume]
+IMPROVE --> BUILDER
 
-    RESULTS --> IMPROVE[✍️ Improve Resume]
+BUILDER --> TEMPLATE[Select Template]
+TEMPLATE --> INFO[Personal Information]
+INFO --> EDUCATION[Education]
+EDUCATION --> EXPERIENCE[Experience]
+EXPERIENCE --> SKILLS[Skills]
+SKILLS --> AIWRITE[AI Rewrite and Suggestions]
+AIWRITE --> PREVIEW[Resume Preview]
+PREVIEW --> SAVE[Save Draft]
+SAVE --> EXPORT[Export PDF or DOC]
 
-    BUILDER --> TEMPLATE[🎨 Select Template]
-    TEMPLATE --> INFO[👤 Personal Information]
-    INFO --> EDUCATION[🎓 Education]
-    EDUCATION --> EXPERIENCE[💼 Experience]
-    EXPERIENCE --> SKILLS[🛠️ Skills]
-    SKILLS --> AIWRITE[✨ AI Rewrite / Suggestions]
-    AIWRITE --> PREVIEW[👀 Resume Preview]
-    PREVIEW --> SAVE[💾 Save Draft]
-    SAVE --> EXPORT[📥 Export PDF/DOC]
+```
 
-    IMPROVE --> BUILDER
+## 📸 Screenshots
 
-    
+### 🏠 Home Page
+
+![Home Page](images/home.png)
+
+### 📊 Resume Analysis
+
+![Resume Analysis](images/analysis.png)
+
+### 🎯 Compatibility Result
+
+![Compatibility Result](images/result.png)
+
+### 📝 Resume Builder
+
+![Resume Builder](images/resume-builder.png)
+
+### 🏗️ System Architecture
+
+![System Architecture](images/architecture.png)
+
+### 🔄 Application Workflow
+
+![Application Workflow](images/workflow.png)
